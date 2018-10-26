@@ -1,6 +1,7 @@
 """Utility functions for simple-salesforce"""
 import os
 import ssl
+
 import xml.dom.minidom
 from urllib.parse import urlparse
 
@@ -81,7 +82,6 @@ def call_salesforce(url, method, session, headers, **kwargs):
     headers.update(additional_headers or dict())
 
     request_args = {
-        'url': url,
         'method': method.upper(),
         'headers': headers
     }
@@ -101,6 +101,7 @@ def call_salesforce(url, method, session, headers, **kwargs):
 
     http = PoolManager(ssl_context=context, cert_reqs='CERT_REQUIRED')
     result = http.urlopen(
+        url=request.url,
         body=request.body,
         redirect=False,
         assert_same_host=False,
